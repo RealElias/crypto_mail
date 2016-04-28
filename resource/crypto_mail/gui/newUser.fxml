@@ -5,17 +5,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
 <GridPane alignment="CENTER" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="crypto_mail.gui.NewUserController">
     <children>
         <Label text="Login" />
         <Label text="Password" GridPane.rowIndex="1" />
         <Label text="Confirm Password" GridPane.rowIndex="2" />
-        <TextField fx:id="loginField" GridPane.columnIndex="1" />
-        <PasswordField fx:id="passwordField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <PasswordField fx:id="confirmPasswordField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Button alignment="CENTER" onAction="#createNewUser" prefHeight="26.0" prefWidth="103.0" text="Create" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <TextField fx:id="loginField" onAction="#createNewUser" GridPane.columnIndex="1" />
+        <PasswordField fx:id="passwordField" onAction="#createNewUser" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <PasswordField fx:id="confirmPasswordField" onAction="#createNewUser" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Button alignment="CENTER" defaultButton="true" onAction="#createNewUser" prefHeight="26.0" prefWidth="103.0" text="Create" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     </children>
     <padding>
         <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
