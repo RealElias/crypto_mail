@@ -43,14 +43,13 @@ public class UserService {
     private List<User> readUsers() {
         List<User> users = new ArrayList<>();
         File usersFile = new File(USERS_FILE_PATH);
+        if (!usersFile.exists())
+            return users;
 
         try {
             ObjectInputStream objectUsersStream = new ObjectInputStream(new FileInputStream(usersFile));
-            User user = (User) objectUsersStream.readObject();
-            while (user != null) {
-                users.add(user);
-                user = (User) objectUsersStream.readObject();
-            }
+
+            users = (List<User>) objectUsersStream.readObject();
             objectUsersStream.close();
         } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
@@ -62,10 +61,13 @@ public class UserService {
         File usersFile = new File(USERS_FILE_PATH);
 
         try {
-            ObjectOutputStream objectUsersStream = new ObjectOutputStream(new FileOutputStream(usersFile));
-            for (User user : users) {
-                objectUsersStream.write(user.toString().getBytes());
+            if (!usersFile.exists()) {
+                usersFile.getParentFile().mkdirs();
+                usersFile.createNewFile();
             }
+
+            ObjectOutputStream objectUsersStream = new ObjectOutputStream(new FileOutputStream(usersFile));
+            objectUsersStream.writeObject(users);
             objectUsersStream.close();
         } catch (IOException e) {
             e.printStackTrace();
