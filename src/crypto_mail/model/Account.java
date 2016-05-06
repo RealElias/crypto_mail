@@ -1,13 +1,15 @@
 package crypto_mail.model;
 
 import javax.mail.Message;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Account {
+public class Account implements Serializable {
 
+    private String name;
     private AccountSettings accountSettings;
-    private Map<String, List<Message>> folders;
+    private Map<String, List<MailMessage>> folders;
 
     public AccountSettings getAccountSettings() {
         return accountSettings;
@@ -17,11 +19,30 @@ public class Account {
         this.accountSettings = accountSettings;
     }
 
-    public Map<String, List<Message>> getFolders() {
+    public Map<String, List<MailMessage>> getFolders() {
         return folders;
     }
 
-    public void setFolders(Map<String, List<Message>> folders) {
+    public void setFolders(Map<String, List<MailMessage>> folders) {
         this.folders = folders;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("Name: ")
+                .append(name)
+                .append("Settings: ")
+                .append(accountSettings)
+                .append("Folders: ")
+                .append(folders)
+                .toString();
     }
 }

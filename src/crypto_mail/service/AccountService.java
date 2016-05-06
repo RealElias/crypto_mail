@@ -13,11 +13,12 @@ import java.util.List;
  * Created by elias on 6.5.16.
  */
 public class AccountService {
+    private static final String EXT = ".mail";
     private static final String ACCOUNTS_DIR = "./config/users/";
-    private static final String ACCOUNTS_TEMP_FILE = "./config/temp";
+    private static final String ACCOUNTS_TEMP_FILE = "./config/temp.mail";
 
     public void writeAccounts(List<Account> accounts, User user) {
-        File output = new File(ACCOUNTS_DIR + user.getName());
+        File output = new File(ACCOUNTS_DIR + user.getName() + EXT);
         File decryptedOutput = new File(ACCOUNTS_TEMP_FILE);
 
         if (accounts.isEmpty() && output.exists()) {
@@ -27,10 +28,10 @@ public class AccountService {
 
         try {
             if (!output.exists()) {
-                output.mkdirs();
+                output.getParentFile().mkdirs();
                 output.createNewFile();
             }
-            decryptedOutput.mkdirs();
+            decryptedOutput.getParentFile().mkdirs();
             decryptedOutput.createNewFile();
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(decryptedOutput));
             outputStream.writeObject(accounts);
@@ -43,7 +44,7 @@ public class AccountService {
     }
 
     public List<Account> readAccounts(User user) {
-        File input = new File(ACCOUNTS_DIR + user.getName());
+        File input = new File(ACCOUNTS_DIR + user.getName() + EXT);
         File decryptedInput = new File(ACCOUNTS_TEMP_FILE);
         List<Account> accounts;
 
@@ -52,7 +53,7 @@ public class AccountService {
         }
 
         try {
-            decryptedInput.mkdirs();
+            decryptedInput.getParentFile().mkdirs();
             decryptedInput.createNewFile();
             CryptoUtils.decrypt(user.getPassword(), input, decryptedInput);
             ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(decryptedInput));

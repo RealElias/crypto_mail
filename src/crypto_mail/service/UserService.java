@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class UserService {
 
-    private static final String USERS_FILE_PATH = "./config/users";
+    private static final String USERS_FILE_PATH = "./config/users.cfg";
 
     public UserService() {}
 

@@ -1,5 +1,6 @@
 package crypto_mail.gui;
 
+import crypto_mail.model.Account;
 import crypto_mail.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,6 +38,20 @@ public class WindowController {
 
     public static void openLoginWindow(Class<?> sourceClass) {
         openWindow(sourceClass, "gui/login.fxml", "CryptoMail -- Login", 285, 110);
+    }
+
+    public static void openAccountSettingsWindow(Class<?> sourceClass, Account account, MainController mainController) {
+        try {
+            FXMLLoader loader = new FXMLLoader(sourceClass.getResource("accountSettings.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("CryptoMail -- Edit Account");
+            stage.setScene(new Scene(loader.load()));
+            AccountSettingsController controller = loader.getController();
+            controller.initController(mainController, account);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void openWindow(Class<?> sourceClass,
