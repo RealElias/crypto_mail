@@ -1,5 +1,6 @@
 package crypto_mail.gui;
 
+import crypto_mail.model.User;
 import crypto_mail.service.user.UserService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -46,6 +47,6 @@ public class NewUserController {
             new Alert(Alert.AlertType.WARNING, "User with such login name already\n exist!", ButtonType.OK).show();
         }
 
-        WindowController.openMainWindow(getClass(), loginField.getScene().getWindow());
+        WindowController.openMainWindow(getClass(), loginField.getScene().getWindow(), new User(login, password));
     }
 }

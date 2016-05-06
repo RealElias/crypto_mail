@@ -1,11 +1,14 @@
 package crypto_mail.gui;
 
+import crypto_mail.model.User;
 import crypto_mail.service.user.UserService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+
+import java.util.Optional;
 
 public class LoginController {
 
@@ -29,8 +32,9 @@ public class LoginController {
         String login = loginField.getText();
         String password = passwordField.getText();
         if (!login.isEmpty() && !password.isEmpty()) {
-            if (userService.checkCredentionals(login, password)) {
-                WindowController.openMainWindow(getClass(), loginField.getScene().getWindow());
+            Optional<User> user = userService.checkCredentials(login, password);
+            if(user.isPresent()) {
+                WindowController.openMainWindow(getClass(), loginField.getScene().getWindow(), user.get());
             } else {
                 new Alert(Alert.AlertType.WARNING, "Login or password is incorrect!", ButtonType.OK).show();
             }

@@ -1,5 +1,6 @@
 package crypto_mail.gui;
 
+import crypto_mail.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,8 +14,19 @@ import java.io.IOException;
  */
 public class WindowController {
 
-    public static void openMainWindow(Class<?> sourceClass, Window previousWindow) {
-        openWindow(sourceClass, "main.fxml", "CryptoMail", 800, 600);
+    public static void openMainWindow(Class<?> sourceClass, Window previousWindow, User user) {
+        try {
+            FXMLLoader loader = new FXMLLoader(sourceClass.getResource("main.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("CryptoMail");
+            stage.setScene(new Scene(loader.load()));
+            MainController controller = loader.getController();
+            controller.setUser(user);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         previousWindow.hide();
     }
 

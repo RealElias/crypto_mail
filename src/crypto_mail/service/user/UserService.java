@@ -6,6 +6,7 @@ import crypto_mail.service.util.MD5Util;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserService {
@@ -34,10 +35,10 @@ public class UserService {
         writeUsers(users);
     }
 
-    public Boolean checkCredentionals(String name, String password) {
+    public Optional<User> checkCredentials(String name, String password) {
         return readUsers().stream()
-                .anyMatch(user -> user.getName().equals(name) &&
-                            user.getPassword().equals(MD5Util.md5Hash(password)));
+                .filter(user -> user.getName().equals(name) &&
+                            user.getPassword().equals(MD5Util.md5Hash(password))).findAny();
     }
 
     private List<User> readUsers() {
