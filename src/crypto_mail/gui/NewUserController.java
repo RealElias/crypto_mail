@@ -1,7 +1,7 @@
 package crypto_mail.gui;
 
 import crypto_mail.model.User;
-import crypto_mail.service.user.UserService;
+import crypto_mail.service.UserService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 

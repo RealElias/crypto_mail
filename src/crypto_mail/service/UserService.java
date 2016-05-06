@@ -1,4 +1,4 @@
-package crypto_mail.service.user;
+package crypto_mail.service;
 
 import crypto_mail.model.User;
 import crypto_mail.service.util.MD5Util;

@@ -1,4 +1,4 @@
-package crypto_mail.service.user;
+package crypto_mail.service;
 
 import crypto_mail.excception.CryptoException;
 import crypto_mail.model.Account;

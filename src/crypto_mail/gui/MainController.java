@@ -2,7 +2,7 @@ package crypto_mail.gui;
 
 import crypto_mail.model.Account;
 import crypto_mail.model.User;
-import crypto_mail.service.user.AccountService;
+import crypto_mail.service.AccountService;
 
 import java.util.List;
 

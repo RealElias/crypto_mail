@@ -2,22 +2,26 @@ package crypto_mail.model;
 
 import javax.mail.Message;
 import java.util.List;
+import java.util.Map;
 
 public class Account {
 
     private AccountSettings accountSettings;
-    private List<Message> inboxMessages;
-    private List<Message> outboxMessages;
+    private Map<String, List<Message>> folders;
 
     public AccountSettings getAccountSettings() {
         return accountSettings;
     }
 
-    public List<Message> getInboxMessages() {
-        return inboxMessages;
+    public void setAccountSettings(AccountSettings accountSettings) {
+        this.accountSettings = accountSettings;
     }
 
-    public List<Message> getOutboxMessages() {
-        return outboxMessages;
+    public Map<String, List<Message>> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(Map<String, List<Message>> folders) {
+        this.folders = folders;
     }
 }
