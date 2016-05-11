@@ -5,14 +5,18 @@ import java.io.Serializable;
 public class AccountSettings implements Serializable {
     private String user;
     private String pass;
-    private String host;
-    private Integer port;
+    private String inputHost;
+    private Integer inputPort;
+    private String outputHost;
+    private Integer outputPort;
 
-    public AccountSettings(String user, String pass, String host, Integer port) {
+    public AccountSettings(String user, String pass, String inputHost, Integer inputPort, String outputHost, Integer outputPort) {
         this.user = user;
         this.pass = pass;
-        this.host = host;
-        this.port = port;
+        this.inputHost = inputHost;
+        this.inputPort = inputPort;
+        this.outputHost = outputHost;
+        this.outputPort = outputPort;
     }
 
     public String getUser() {
@@ -23,12 +27,20 @@ public class AccountSettings implements Serializable {
         return pass;
     }
 
-    public String getHost() {
-        return host;
+    public String getInputHost() {
+        return inputHost;
     }
 
-    public Integer getPort() {
-        return port;
+    public Integer getInputPort() {
+        return inputPort;
+    }
+
+    public String getOutputHost() {
+        return outputHost;
+    }
+
+    public Integer getOutputPort() {
+        return outputPort;
     }
 
     @Override
@@ -38,10 +50,16 @@ public class AccountSettings implements Serializable {
                 .append(user)
                 .append("Password: ")
                 .append(pass)
-                .append("Host: ")
-                .append(host)
+                .append("InputSettings - ")
+                .append("Host:")
+                .append(inputHost)
                 .append("Port: ")
-                .append(port)
+                .append(inputPort)
+                .append("OutputSettings - ")
+                .append("Host:")
+                .append(outputHost)
+                .append("Port: ")
+                .append(outputPort)
                 .toString();
     }
 }

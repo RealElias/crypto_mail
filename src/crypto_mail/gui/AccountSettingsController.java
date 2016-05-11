@@ -18,10 +18,16 @@ public class AccountSettingsController {
     private PasswordField passwordField;
 
     @FXML
-    private TextField hostField;
+    private TextField inputHostField;
 
     @FXML
-    private TextField portField;
+    private TextField inputPortField;
+
+    @FXML
+    private TextField outputHostField;
+
+    @FXML
+    private TextField outputPortField;
 
     private Account account;
     private MainController mainController;
@@ -33,8 +39,10 @@ public class AccountSettingsController {
             nameField.setText(account.getName());
             mailField.setText(account.getAccountSettings().getUser());
             passwordField.setText(account.getAccountSettings().getPass());
-            hostField.setText(account.getAccountSettings().getHost());
-            portField.setText(account.getAccountSettings().getPort().toString());
+            inputHostField.setText(account.getAccountSettings().getInputHost());
+            inputPortField.setText(account.getAccountSettings().getInputPort().toString());
+            outputHostField.setText(account.getAccountSettings().getOutputHost());
+            outputPortField.setText(account.getAccountSettings().getOutputPort().toString());
         }
     }
 
@@ -46,8 +54,10 @@ public class AccountSettingsController {
         account.setName(nameField.getText());
         account.setAccountSettings(new AccountSettings(mailField.getText(),
                                                     passwordField.getText(),
-                                                    hostField.getText(),
-                                                    Integer.parseInt(portField.getText())));
+                                                    inputHostField.getText(),
+                                                    Integer.parseInt(inputPortField.getText()),
+                                                    outputHostField.getText(),
+                                                    Integer.parseInt(outputPortField.getText())));
 
         mainController.updateAccountSettings(account);
 

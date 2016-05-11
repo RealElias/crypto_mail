@@ -1,6 +1,7 @@
 package crypto_mail.gui;
 
 import crypto_mail.model.Account;
+import crypto_mail.model.ComposeMailType;
 import crypto_mail.model.MailMessage;
 import crypto_mail.model.User;
 import crypto_mail.service.AccountService;
@@ -106,19 +107,12 @@ public class MainController {
         selectedMessage = selectedFolder.get(index);
 
         subjectField.setText(selectedMessage.getSubject());
-
-        StringBuilder fromAddresses = new StringBuilder(selectedMessage.getFrom().get(0).toString());
-        for (int i = 1; i < selectedMessage.getFrom().size(); i++) {
-            fromAddresses.append(", ").append(selectedMessage.getFrom().get(i).toString());
-        }
-        fromField.setText(fromAddresses.toString());
+        fromField.setText(MailService.asString(selectedMessage.getFrom()));
 
         if (selectedMessage.getRecipients().size() > 1) {
-            StringBuilder ccAddresses = new StringBuilder(selectedMessage.getRecipients().get(1).toString());
-            for (int i = 2; i < selectedMessage.getRecipients().size(); i++) {
-                ccAddresses.append(", ").append(selectedMessage.getRecipients().get(i).toString());
-            }
-            ccField.setText(ccAddresses.toString());
+            List<Address> ccAddresses = selectedMessage.getRecipients();
+            ccAddresses.remove(0);
+            ccField.setText(MailService.asString(ccAddresses));
         }
 
         LocalDateTime dateTime = LocalDateTime.ofInstant(selectedMessage.getReceivedDate().toInstant(), ZoneId.systemDefault());
@@ -128,8 +122,10 @@ public class MainController {
     }
 
     private void selectFolder(Integer index) {
+        if(index < 0)
+            return;
+
         String folderName = (String) selectedAccount.getFolders().keySet().toArray()[index];
-        System.out.println(folderName);
         selectedFolder = selectedAccount.getFolders().get(folderName);
 
         ObservableList<String> messages = FXCollections.observableArrayList(selectedFolder.stream()
@@ -139,6 +135,9 @@ public class MainController {
     }
 
     private void selectAccount(Integer index) {
+        if(index < 0)
+            return;
+
         this.selectedAccount = accounts.get(index);
         ObservableList<String> folders = FXCollections.observableArrayList(selectedAccount
                 .getFolders()
@@ -189,5 +188,17 @@ public class MainController {
     private void writeAccounts() {
         accountService.writeAccounts(accounts, user);
         updateAccountsList();
+    }
+
+    public void composeNewMail() {
+        WindowController.openComposeMailWindow(getClass(), ComposeMailType.NEW, null);
+    }
+
+    public void composeForward() {
+        WindowController.openComposeMailWindow(getClass(), ComposeMailType.FORWARD, selectedMessage);
+    }
+
+    public void composeReply() {
+        WindowController.openComposeMailWindow(getClass(), ComposeMailType.REPLY, selectedMessage);
     }
 }

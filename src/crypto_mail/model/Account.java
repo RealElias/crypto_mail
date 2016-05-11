@@ -1,6 +1,5 @@
 package crypto_mail.model;
 
-import javax.mail.Message;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;

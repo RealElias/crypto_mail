@@ -4,9 +4,9 @@ import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
 
 import javax.mail.*;
-import javax.mail.internet.MimeMultipart;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.IOException;
-import java.net.ProtocolException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -21,8 +21,8 @@ public class MailService {
         try {
             Session session = Session.getInstance(props);
             Store store = session.getStore();
-            store.connect(account.getAccountSettings().getHost(),
-                    account.getAccountSettings().getPort(),
+            store.connect(account.getAccountSettings().getInputHost(),
+                    account.getAccountSettings().getInputPort(),
                     account.getAccountSettings().getUser(),
                     account.getAccountSettings().getPass());
 
@@ -94,5 +94,29 @@ public class MailService {
         }
 
         return null;
+    }
+
+    public void sendMail(MailMessage message) {
+
+    }
+
+    public static String asString(List<Address> addresses) {
+        StringJoiner joiner = new StringJoiner(", ");
+        addresses.stream().forEach(address -> joiner.add(address.toString()));
+        return joiner.toString();
+    }
+
+    public static List<Address> asAddressList(String... addressesLines) {
+        List<Address> addresses = new ArrayList<>();
+        try {
+            for(String addressesLine : addressesLines) {
+                for (String address : addressesLine.split(", ")) {
+                    addresses.add(new InternetAddress(address));
+                }
+            }
+        } catch (AddressException e) {
+            e.printStackTrace();
+        }
+        return addresses;
     }
 }

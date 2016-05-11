@@ -1,6 +1,8 @@
 package crypto_mail.gui;
 
 import crypto_mail.model.Account;
+import crypto_mail.model.ComposeMailType;
+import crypto_mail.model.MailMessage;
 import crypto_mail.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -53,6 +55,24 @@ public class WindowController {
             e.printStackTrace();
         }
     }
+
+    public static void openComposeMailWindow(Class<?> sourceClass, ComposeMailType mailType, MailMessage message) {
+        try {
+            FXMLLoader loader = new FXMLLoader(sourceClass.getResource("composeMail.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("CryptoMail -- Compose Message");
+            stage.setScene(new Scene(loader.load()));
+            ComposeMailController controller = loader.getController();
+            if (mailType == ComposeMailType.FORWARD) {
+                controller.initForward(message);
+            }
+            if (mailType == ComposeMailType.REPLY) {
+                controller.initReply(message);
+            }
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }    }
 
     private static void openWindow(Class<?> sourceClass,
                                    String resourceName,
