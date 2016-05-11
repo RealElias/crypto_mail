@@ -1,5 +1,6 @@
 package crypto_mail.gui;
 
+import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
 import crypto_mail.service.MailService;
 import javafx.fxml.FXML;
@@ -29,8 +30,14 @@ public class ComposeMailController {
     @FXML
     TextArea contentArea;
 
+    private Account account;
+
     public ComposeMailController() {
         mailService = new MailService();
+    }
+
+    public void initAccount(Account account) {
+        this.account = account;
     }
 
     public void initForward(MailMessage message) {
@@ -58,7 +65,8 @@ public class ComposeMailController {
 
     public void sendMail() {
         MailMessage message = composeMessage();
-        mailService.sendMail(message);
+        mailService.sendMail(account, message);
+        contentArea.getScene().getWindow().hide();
     }
 
     private MailMessage composeMessage() {

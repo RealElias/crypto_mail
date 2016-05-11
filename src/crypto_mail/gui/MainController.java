@@ -191,14 +191,14 @@ public class MainController {
     }
 
     public void composeNewMail() {
-        WindowController.openComposeMailWindow(getClass(), ComposeMailType.NEW, null);
+        WindowController.openComposeMailWindow(getClass(), selectedAccount, ComposeMailType.NEW, null);
     }
 
     public void composeForward() {
-        WindowController.openComposeMailWindow(getClass(), ComposeMailType.FORWARD, selectedMessage);
+        WindowController.openComposeMailWindow(getClass(), selectedAccount, ComposeMailType.FORWARD, selectedMessage);
     }
 
     public void composeReply() {
-        WindowController.openComposeMailWindow(getClass(), ComposeMailType.REPLY, selectedMessage);
+        WindowController.openComposeMailWindow(getClass(), selectedAccount, ComposeMailType.REPLY, selectedMessage);
     }
 }

@@ -56,13 +56,14 @@ public class WindowController {
         }
     }
 
-    public static void openComposeMailWindow(Class<?> sourceClass, ComposeMailType mailType, MailMessage message) {
+    public static void openComposeMailWindow(Class<?> sourceClass, Account account, ComposeMailType mailType, MailMessage message) {
         try {
             FXMLLoader loader = new FXMLLoader(sourceClass.getResource("composeMail.fxml"));
             Stage stage = new Stage();
             stage.setTitle("CryptoMail -- Compose Message");
             stage.setScene(new Scene(loader.load()));
             ComposeMailController controller = loader.getController();
+            controller.initAccount(account);
             if (mailType == ComposeMailType.FORWARD) {
                 controller.initForward(message);
             }

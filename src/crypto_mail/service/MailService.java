@@ -6,6 +6,7 @@ import crypto_mail.model.MailMessage;
 import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -96,8 +97,36 @@ public class MailService {
         return null;
     }
 
-    public void sendMail(MailMessage message) {
+    public void sendMail(Account account, MailMessage mailMessage) {
+        Properties props = new Properties();
+        props.put("mail.smtps.host", account.getAccountSettings().getOutputHost());
+        props.put("mail.smtps.port", account.getAccountSettings().getOutputPort());
+        props.put("mail.transport.protocol", "smtps");
+        props.put("mail.smtps.auth", "true");
+        props.put("mail.debug", "true");
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(account.getAccountSettings().getUser(), account.getAccountSettings().getPass());
+                    }
+                });
 
+        try {
+            Message message = new MimeMessage(session);
+            message.addFrom(asAddressArray(mailMessage.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, asAddressArray(mailMessage.getRecipients()));
+            message.setSubject(mailMessage.getSubject());
+            message.setSentDate(new Date());
+            message.setText(mailMessage.getContent());
+            message.saveChanges();
+
+            Transport transport = session.getTransport("smtps");
+            transport.connect();
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 
     public static String asString(List<Address> addresses) {
@@ -117,6 +146,16 @@ public class MailService {
         } catch (AddressException e) {
             e.printStackTrace();
         }
+        return addresses;
+    }
+
+    private static Address[] asAddressArray(List<Address> addressList) {
+        Address[] addresses = new Address[addressList.size()];
+
+        for (int i = 0; i < addressList.size(); i++) {
+            addresses[i] = addressList.get(i);
+        }
+
         return addresses;
     }
 }
