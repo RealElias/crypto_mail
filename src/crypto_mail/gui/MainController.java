@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class MainController {
     private User user;
@@ -105,7 +106,7 @@ public class MainController {
         if(index < 0)
             return;
 
-        selectedMessage = selectedFolder.get(index);
+        selectedMessage = selectedFolder.get(selectedFolder.size() - index - 1);
 
         subjectField.setText(selectedMessage.getSubject());
         fromField.setText(MailUtils.asString(selectedMessage.getFrom()));
@@ -126,12 +127,14 @@ public class MainController {
         if(index < 0)
             return;
 
-        String folderName = (String) selectedAccount.getFolders().keySet().toArray()[index];
+        String folderName = (String) selectedAccount.getFolders().keySet().toArray()[selectedAccount.getFolders().keySet().size() - index - 1];
         selectedFolder = selectedAccount.getFolders().get(folderName);
 
-        ObservableList<String> messages = FXCollections.observableArrayList(selectedFolder.stream()
+        List<String> reversedMessages = selectedFolder.stream()
                 .map(message -> message.getSubject() + "\n" + message.getContentTitle())
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
+        ObservableList<String> messages = FXCollections.observableArrayList(new ArrayList<>());
+        IntStream.range(0, reversedMessages.size()).forEach(i -> messages.add(reversedMessages.get(reversedMessages.size() - i - 1)));
         messagesList.setItems(messages);
     }
 
@@ -139,15 +142,16 @@ public class MainController {
         if(index < 0)
             return;
 
-        this.selectedAccount = accounts.get(index);
+        this.selectedAccount = accounts.get(accounts.size() - index - 1);
         ObservableList<String> folders = FXCollections.observableArrayList(new ArrayList<>());
         if(selectedAccount.getFolders() != null) {
-            folders.addAll(selectedAccount
+            List<String> reversedFolders = selectedAccount
                     .getFolders()
                     .entrySet()
                     .stream()
                     .map(entry -> entry.getKey() + "(" + entry.getValue().size() + ")")
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList());
+            IntStream.range(0, reversedFolders.size()).forEach(i -> folders.add(reversedFolders.get(reversedFolders.size() - i - 1)));
         }
         foldersList.setItems(folders);
         editAccountButton.setDisable(false);
