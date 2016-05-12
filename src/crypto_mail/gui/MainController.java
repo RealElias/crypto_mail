@@ -142,7 +142,7 @@ public class MainController {
         if(index < 0)
             return;
 
-        this.selectedAccount = accounts.get(accounts.size() - index - 1);
+        this.selectedAccount = accounts.get(index);
         ObservableList<String> folders = FXCollections.observableArrayList(new ArrayList<>());
         if(selectedAccount.getFolders() != null) {
             List<String> reversedFolders = selectedAccount
