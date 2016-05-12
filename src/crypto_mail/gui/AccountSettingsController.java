@@ -43,7 +43,18 @@ public class AccountSettingsController {
             inputPortField.setText(account.getAccountSettings().getInputPort().toString());
             outputHostField.setText(account.getAccountSettings().getOutputHost());
             outputPortField.setText(account.getAccountSettings().getOutputPort().toString());
+        } else {
+            inputPortField.setText("993");
+            outputPortField.setText("465");
         }
+
+        mailField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.contains("@")) {
+                String hostEnd = newValue.replaceAll(".+@", "");
+                inputHostField.setText("imap." + hostEnd);
+                outputHostField.setText("smtp." + hostEnd);
+            }
+        });
     }
 
     public void saveChanges() {

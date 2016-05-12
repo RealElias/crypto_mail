@@ -50,7 +50,7 @@ public class MailService {
             }
             mailMessage.setReceivedDate(message.getReceivedDate());
             mailMessage.setContent(getText(message));
-        } catch (MessagingException | IOException e) {
+        } catch (MessagingException | IOException | NullPointerException e) {
             mailMessage.setContent("Can't get content");
         }
 
@@ -58,7 +58,7 @@ public class MailService {
     }
 
     private static String getText(Part p) throws
-            MessagingException, IOException {
+            MessagingException, IOException, NullPointerException {
         if (p.isMimeType("text/*")) {
             String s = (String)p.getContent();
             return s;
@@ -101,7 +101,6 @@ public class MailService {
         props.put("mail.smtps.port", account.getAccountSettings().getOutputPort());
         props.put("mail.transport.protocol", "smtps");
         props.put("mail.smtps.auth", "true");
-        props.put("mail.debug", "true");
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {

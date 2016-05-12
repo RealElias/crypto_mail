@@ -56,8 +56,8 @@ public class MailMessage implements Serializable {
         String clearContent = content.replaceAll("<[^>]*>","");
         if(clearContent == null)
             return "";
-        if(clearContent.length() < 12)
+        if(clearContent.length() < 30)
             return clearContent;
-        return clearContent.substring(0, 12);
+        return clearContent.substring(0, 30);
     }
 }

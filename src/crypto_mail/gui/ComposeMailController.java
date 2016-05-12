@@ -39,6 +39,7 @@ public class ComposeMailController {
 
     public void initAccount(Account account) {
         this.account = account;
+        fromField.setText(account.getAccountSettings().getUser());
     }
 
     public void initForward(MailMessage message) {
@@ -48,7 +49,6 @@ public class ComposeMailController {
             ccAddresses.remove(0);
             ccField.setText(MailUtils.asString(ccAddresses));
         }
-        fromField.setText(message.getRecipients().get(0).toString());
         contentArea.setText(quoteText(message.getContent()));
     }
 
@@ -60,7 +60,6 @@ public class ComposeMailController {
             ccField.setText(MailUtils.asString(ccAddresses));
         }
         toField.setText(MailUtils.asString(message.getFrom()));
-        fromField.setText(message.getRecipients().get(0).toString());
         contentArea.setText(quoteText(message.getContent()));
     }
 

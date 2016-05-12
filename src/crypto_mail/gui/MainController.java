@@ -20,6 +20,7 @@ import javax.mail.Address;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -139,12 +140,15 @@ public class MainController {
             return;
 
         this.selectedAccount = accounts.get(index);
-        ObservableList<String> folders = FXCollections.observableArrayList(selectedAccount
-                .getFolders()
-                .entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + "(" + entry.getValue().size() + ")")
-                .collect(Collectors.toList()));
+        ObservableList<String> folders = FXCollections.observableArrayList(new ArrayList<>());
+        if(selectedAccount.getFolders() != null) {
+            folders.addAll(selectedAccount
+                    .getFolders()
+                    .entrySet()
+                    .stream()
+                    .map(entry -> entry.getKey() + "(" + entry.getValue().size() + ")")
+                    .collect(Collectors.toList()));
+        }
         foldersList.setItems(folders);
         editAccountButton.setDisable(false);
         removeAccountButton.setDisable(false);
@@ -162,6 +166,8 @@ public class MainController {
     private void updateAccountsList() {
         ObservableList<String> accountNames = FXCollections.observableArrayList(accounts.stream().map(Account::getName).collect(Collectors.toList()));
         accountsList.setItems(accountNames);
+        editAccountButton.setDisable(true);
+        removeAccountButton.setDisable(true);
     }
 
     public void editAccount() {
@@ -172,6 +178,7 @@ public class MainController {
     public void removeAccount() {
         accounts.remove(selectedAccount);
         accountService.writeAccounts(accounts, user);
+        updateAccountsList();
     }
 
     public void updateAccountSettings(Account changedAccount) {
