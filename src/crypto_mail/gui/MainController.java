@@ -6,14 +6,15 @@ import crypto_mail.model.MailMessage;
 import crypto_mail.model.User;
 import crypto_mail.service.AccountService;
 import crypto_mail.service.MailService;
+import crypto_mail.service.util.MailUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.web.WebView;
 
 import javax.mail.Address;
 import java.time.LocalDateTime;
@@ -21,7 +22,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class MainController {
@@ -64,7 +64,7 @@ public class MainController {
     TextField dateField;
 
     @FXML
-    TextArea contentArea;
+    WebView contentArea;
 
     private Account selectedAccount;
 
@@ -107,18 +107,18 @@ public class MainController {
         selectedMessage = selectedFolder.get(index);
 
         subjectField.setText(selectedMessage.getSubject());
-        fromField.setText(MailService.asString(selectedMessage.getFrom()));
+        fromField.setText(MailUtils.asString(selectedMessage.getFrom()));
 
         if (selectedMessage.getRecipients().size() > 1) {
             List<Address> ccAddresses = selectedMessage.getRecipients();
             ccAddresses.remove(0);
-            ccField.setText(MailService.asString(ccAddresses));
+            ccField.setText(MailUtils.asString(ccAddresses));
         }
 
         LocalDateTime dateTime = LocalDateTime.ofInstant(selectedMessage.getReceivedDate().toInstant(), ZoneId.systemDefault());
         dateField.setText(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         toField.setText(selectedMessage.getRecipients().get(0).toString());
-        contentArea.setText(selectedMessage.getContent());
+        contentArea.getEngine().loadContent(selectedMessage.getContent());
     }
 
     private void selectFolder(Integer index) {

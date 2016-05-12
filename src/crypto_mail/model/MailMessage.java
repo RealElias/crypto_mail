@@ -53,10 +53,11 @@ public class MailMessage implements Serializable {
     }
 
     public String getContentTitle() {
-        if(content == null)
+        String clearContent = content.replaceAll("<[^>]*>","");
+        if(clearContent == null)
             return "";
-        if(content.length() < 12)
-            return content;
-        return content.substring(0, 12);
+        if(clearContent.length() < 12)
+            return clearContent;
+        return clearContent.substring(0, 12);
     }
 }

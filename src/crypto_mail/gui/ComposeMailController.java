@@ -3,6 +3,7 @@ package crypto_mail.gui;
 import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
 import crypto_mail.service.MailService;
+import crypto_mail.service.util.MailUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -45,7 +46,7 @@ public class ComposeMailController {
         if (message.getRecipients().size() > 1) {
             List<Address> ccAddresses = message.getRecipients();
             ccAddresses.remove(0);
-            ccField.setText(MailService.asString(ccAddresses));
+            ccField.setText(MailUtils.asString(ccAddresses));
         }
         fromField.setText(message.getRecipients().get(0).toString());
         contentArea.setText(quoteText(message.getContent()));
@@ -56,9 +57,9 @@ public class ComposeMailController {
         if (message.getRecipients().size() > 1) {
             List<Address> ccAddresses = message.getRecipients();
             ccAddresses.remove(0);
-            ccField.setText(MailService.asString(ccAddresses));
+            ccField.setText(MailUtils.asString(ccAddresses));
         }
-        toField.setText(MailService.asString(message.getFrom()));
+        toField.setText(MailUtils.asString(message.getFrom()));
         fromField.setText(message.getRecipients().get(0).toString());
         contentArea.setText(quoteText(message.getContent()));
     }
@@ -72,8 +73,8 @@ public class ComposeMailController {
     private MailMessage composeMessage() {
         MailMessage message = new MailMessage();
         message.setSubject(subjectField.getText());
-        message.setFrom(MailService.asAddressList(fromField.getText()));
-        message.setRecipients(MailService.asAddressList(toField.getText(), ccField.getText()));
+        message.setFrom(MailUtils.asAddressList(fromField.getText()));
+        message.setRecipients(MailUtils.asAddressList(toField.getText(), ccField.getText()));
         message.setContent(contentArea.getText());
         return message;
     }

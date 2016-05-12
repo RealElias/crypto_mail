@@ -3,8 +3,6 @@ package crypto_mail.model;
 import crypto_mail.service.util.MD5Util;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class User implements Serializable {
     private String name;

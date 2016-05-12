@@ -2,10 +2,9 @@ package crypto_mail.service;
 
 import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
+import crypto_mail.service.util.MailUtils;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.*;
@@ -16,7 +15,6 @@ public class MailService {
 
     public void getMail(Account account) {
         Properties props = new Properties();
-        props.put("mail.debug", "true");
         props.put("mail.store.protocol", "imaps");
 
         try {
@@ -51,9 +49,9 @@ public class MailService {
                 mailMessage.setRecipients(new ArrayList<>());
             }
             mailMessage.setReceivedDate(message.getReceivedDate());
-//            mailMessage.setContent(getText(message));
-        } catch (MessagingException e) {
-            e.printStackTrace();
+            mailMessage.setContent(getText(message));
+        } catch (MessagingException | IOException e) {
+            mailMessage.setContent("Can't get content");
         }
 
         return mailMessage;
@@ -113,8 +111,8 @@ public class MailService {
 
         try {
             Message message = new MimeMessage(session);
-            message.addFrom(asAddressArray(mailMessage.getFrom()));
-            message.setRecipients(Message.RecipientType.TO, asAddressArray(mailMessage.getRecipients()));
+            message.addFrom(MailUtils.asAddressArray(mailMessage.getFrom()));
+            message.setRecipients(Message.RecipientType.TO, MailUtils.asAddressArray(mailMessage.getRecipients()));
             message.setSubject(mailMessage.getSubject());
             message.setSentDate(new Date());
             message.setText(mailMessage.getContent());
@@ -127,35 +125,5 @@ public class MailService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-    }
-
-    public static String asString(List<Address> addresses) {
-        StringJoiner joiner = new StringJoiner(", ");
-        addresses.stream().forEach(address -> joiner.add(address.toString()));
-        return joiner.toString();
-    }
-
-    public static List<Address> asAddressList(String... addressesLines) {
-        List<Address> addresses = new ArrayList<>();
-        try {
-            for(String addressesLine : addressesLines) {
-                for (String address : addressesLine.split(", ")) {
-                    addresses.add(new InternetAddress(address));
-                }
-            }
-        } catch (AddressException e) {
-            e.printStackTrace();
-        }
-        return addresses;
-    }
-
-    private static Address[] asAddressArray(List<Address> addressList) {
-        Address[] addresses = new Address[addressList.size()];
-
-        for (int i = 0; i < addressList.size(); i++) {
-            addresses[i] = addressList.get(i);
-        }
-
-        return addresses;
     }
 }

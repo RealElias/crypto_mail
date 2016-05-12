@@ -4,9 +4,7 @@ import crypto_mail.excception.CryptoException;
 
 import java.io.*;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
-import java.security.Provider;
 import java.security.spec.InvalidKeySpecException;
 
 import javax.crypto.*;

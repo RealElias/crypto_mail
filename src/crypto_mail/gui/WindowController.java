@@ -73,7 +73,8 @@ public class WindowController {
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
-        }    }
+        }
+    }
 
     private static void openWindow(Class<?> sourceClass,
                                    String resourceName,
