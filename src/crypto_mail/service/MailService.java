@@ -1,5 +1,6 @@
 package crypto_mail.service;
 
+import crypto_mail.gui.MainController;
 import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
 import crypto_mail.service.util.MailUtils;
@@ -8,12 +9,10 @@ import javax.mail.*;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class MailService {
 
-    public void getMail(Account account) {
+    public void getMail(Account account, MainController controller) {
         Properties props = new Properties();
         props.put("mail.store.protocol", "imaps");
 
@@ -28,7 +27,12 @@ public class MailService {
             Map<String, List<MailMessage>> folders = new HashMap<>();
             for (Folder folder : store.getDefaultFolder().list()) {
                 folder.open(Folder.READ_ONLY);
-                folders.put(folder.getName(), Stream.of(folder.getMessages()).map(MailService::asMailMessage).collect(Collectors.toList()));
+                List<MailMessage> mailMessages = new ArrayList();
+                for (int i = 0; i < folder.getMessageCount(); i++) {
+                    mailMessages.add(MailService.asMailMessage(folder.getMessages()[i]));
+                    controller.setProgress(i, folder.getMessageCount(), account.getName(), folder.getName());
+                }
+                folders.put(folder.getName(), mailMessages);
             }
 
             account.setFolders(folders);

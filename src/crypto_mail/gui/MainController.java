@@ -10,10 +10,9 @@ import crypto_mail.service.util.MailUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.web.WebView;
 
 import javax.mail.Address;
@@ -67,6 +66,12 @@ public class MainController {
 
     @FXML
     WebView contentArea;
+
+    @FXML
+    ProgressBar progressBar;
+
+    @FXML
+    Label progressLabel;
 
     private Account selectedAccount;
 
@@ -159,8 +164,31 @@ public class MainController {
     }
 
     public void getMail() {
-        accounts.forEach(mailService::getMail);
+        progressLabel.setText("");
+        for (Account account : accounts) {
+            mailService.getMail(account, this);
+        }
         writeAccounts();
+    }
+
+    public void setProgress(int ready, int total, String accountName, String folder) {
+//        progressBar.setProgress(ready/total);
+//        progressLabel.setText(accountName + ":" + folder + " " + ready + "/" + total);
+        Task progressChangeTask = createWorker(ready, total, accountName, folder);
+        progressBar.progressProperty().unbind();
+        progressBar.progressProperty().bind(progressChangeTask.progressProperty());
+        new Thread(progressChangeTask).start();
+    }
+
+    private Task createWorker(int ready, int total, String accountName, String folder) {
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                progressBar.setProgress(ready/total);
+                progressLabel.setText(accountName + ":" + folder + " " + ready + "/" + total);
+                return true;
+            }
+        };
     }
 
     public void addAccount() {
