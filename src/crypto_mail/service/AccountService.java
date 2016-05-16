@@ -1,6 +1,5 @@
 package crypto_mail.service;
 
-import crypto_mail.excception.CryptoException;
 import crypto_mail.model.Account;
 import crypto_mail.model.User;
 import crypto_mail.service.util.CryptoUtils;
@@ -36,7 +35,7 @@ public class AccountService {
             ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(decryptedOutput));
             outputStream.writeObject(accounts);
             CryptoUtils.encrypt(user.getPassword(), decryptedOutput, output);
-        } catch (IOException | CryptoException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             decryptedOutput.delete();
@@ -60,7 +59,7 @@ public class AccountService {
             accounts = (List<Account>)inputStream.readObject();
             inputStream.close();
             return accounts;
-        } catch (CryptoException | IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
         } finally {

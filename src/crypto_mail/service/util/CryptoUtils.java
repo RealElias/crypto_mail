@@ -1,64 +1,98 @@
 package crypto_mail.service.util;
 
-import crypto_mail.excception.CryptoException;
-
-import java.io.*;
+import javax.crypto.*;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-
-import javax.crypto.*;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.Random;
 
 public class CryptoUtils {
-    private static final String ALGORITHM = "AES";
-    private static final String TRANSFORMATION = "AES";
-    private static final int pswdIterations = 65536  ;
-    private static final int keySize = 256;
-    private static final byte[] saltBytes = {0,1,2,3,4,5,6};
 
+    public static void encrypt(String key, File inputFile, File outputFile) {
 
-    public static void encrypt(String key, File inputFile, File outputFile)
-            throws CryptoException {
-        doCrypto(Cipher.ENCRYPT_MODE, key, inputFile, outputFile);
-    }
-
-    public static void decrypt(String key, File inputFile, File outputFile)
-            throws CryptoException {
-        doCrypto(Cipher.DECRYPT_MODE, key, inputFile, outputFile);
-    }
-
-    private static void doCrypto(int cipherMode, String key, File inputFile,
-                                 File outputFile) throws CryptoException {
         try {
+            FileInputStream inFile = new FileInputStream(inputFile);
+            FileOutputStream outFile = new FileOutputStream(outputFile);
 
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            PBEKeySpec spec = new PBEKeySpec(key.toCharArray(), saltBytes, pswdIterations, keySize);
-            SecretKey secretKey = factory.generateSecret(spec);
-            SecretKeySpec secret = new SecretKeySpec(secretKey.getEncoded(), "AES");
+            PBEKeySpec pbeKeySpec = new PBEKeySpec(key.toCharArray());
+            SecretKeyFactory secretKeyFactory = SecretKeyFactory
+                    .getInstance("PBEWithMD5AndTripleDES");
+            SecretKey secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
 
-//            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF8"), ALGORITHM);
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            cipher.init(cipherMode, secret);
+            byte[] salt = new byte[8];
+            Random random = new Random();
+            random.nextBytes(salt);
 
-            FileInputStream inputStream = new FileInputStream(inputFile);
-            byte[] inputBytes = new byte[(int) inputFile.length()];
-            inputStream.read(inputBytes);
+            PBEParameterSpec pbeParameterSpec = new PBEParameterSpec(salt, 100);
+            Cipher cipher = Cipher.getInstance("PBEWithMD5AndTripleDES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, pbeParameterSpec);
+            outFile.write(salt);
 
-            byte[] outputBytes = cipher.doFinal(inputBytes);
+            byte[] input = new byte[64];
+            int bytesRead;
+            while ((bytesRead = inFile.read(input)) != -1) {
+                byte[] output = cipher.update(input, 0, bytesRead);
+                if (output != null)
+                    outFile.write(output);
+            }
 
-            FileOutputStream outputStream = new FileOutputStream(outputFile);
-            outputStream.write(outputBytes);
+            byte[] output = cipher.doFinal();
+            if (output != null)
+                outFile.write(output);
 
-            inputStream.close();
-            outputStream.close();
+            inFile.close();
+            outFile.flush();
+            outFile.close();
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException | InvalidKeyException |
+                InvalidAlgorithmParameterException | NoSuchPaddingException | IOException |
+                IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+        }
+    }
 
-        } catch (NoSuchPaddingException | NoSuchAlgorithmException
-                | InvalidKeyException | BadPaddingException
-                | IllegalBlockSizeException | IOException ex) {
-            throw new CryptoException("Error encrypting/decrypting file", ex);
-        } catch (InvalidKeySpecException e) {
+    public static void decrypt(String key, File inputFile, File outputFile) {
+        try {
+            PBEKeySpec pbeKeySpec = new PBEKeySpec(key.toCharArray());
+            SecretKeyFactory secretKeyFactory = null;
+                secretKeyFactory = SecretKeyFactory
+                        .getInstance("PBEWithMD5AndTripleDES");
+            SecretKey secretKey = secretKeyFactory.generateSecret(pbeKeySpec);
+
+            FileInputStream fis = new FileInputStream(inputFile);
+            byte[] salt = new byte[8];
+            fis.read(salt);
+
+            PBEParameterSpec pbeParameterSpec = new PBEParameterSpec(salt, 100);
+
+            Cipher cipher = Cipher.getInstance("PBEWithMD5AndTripleDES");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, pbeParameterSpec);
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            byte[] in = new byte[64];
+            int read;
+            while ((read = fis.read(in)) != -1) {
+                byte[] output = cipher.update(in, 0, read);
+                if (output != null)
+                    fos.write(output);
+            }
+
+            byte[] output = cipher.doFinal();
+            if (output != null)
+                fos.write(output);
+
+            fis.close();
+            fos.flush();
+            fos.close();
+
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException |
+                InvalidAlgorithmParameterException | NoSuchPaddingException | IOException |
+                IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
     }
