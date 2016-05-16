@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="javafx" name="CryptoMail">
-    <output-path>$PROJECT_DIR$/out/artifacts/JavaFXApp</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/CryptoMail</output-path>
     <properties id="javafx-properties">
       <options>
         <option name="appClass" value="crypto_mail.Main" />
