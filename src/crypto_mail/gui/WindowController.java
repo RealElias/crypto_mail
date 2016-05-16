@@ -23,6 +23,7 @@ public class WindowController {
             Stage stage = new Stage();
             stage.setTitle("CryptoMail");
             stage.setScene(new Scene(loader.load()));
+            stage.setResizable(false);
             MainController controller = loader.getController();
             controller.setUser(user);
             stage.show();
