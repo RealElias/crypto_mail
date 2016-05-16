@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="JavaFXApp.jnlp">
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="CryptoMail.jnlp">
   <information>
-    <title>JavaFXApp</title>
+    <title>CryptoMail</title>
     <vendor>Unknown</vendor>
-    <description>JavaFXApp</description>
+    <description>CryptoMail</description>
     <offline-allowed/>
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="CryptoMail.jar" size="38667" download="eager" />
     <jar href="JavaFXApp.jar" size="36133" download="eager" />
     <jar href="mail.jar" size="507849" download="eager" />
   </resources>
-  <jfx:javafx-desc  width="600" height="400" main-class="crypto_mail.Main"  name="JavaFXApp" />
+  <jfx:javafx-desc  width="600" height="400" main-class="crypto_mail.Main"  name="CryptoMail" />
   <update check="background"/>
 </jnlp>

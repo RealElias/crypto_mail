@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" name="JavaFXApp">
+  <artifact type="javafx" name="CryptoMail">
     <output-path>$PROJECT_DIR$/out/artifacts/JavaFXApp</output-path>
     <properties id="javafx-properties">
       <options>
@@ -7,7 +7,7 @@
       </options>
     </properties>
     <root id="root">
-      <element id="archive" name="JavaFXApp.jar">
+      <element id="archive" name="CryptoMail.jar">
         <element id="module-output" name="crypto_mail" />
       </element>
       <element id="library" level="project" name="javamail-1.4" />
