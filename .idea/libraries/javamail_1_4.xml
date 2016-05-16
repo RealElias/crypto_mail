@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="javamail-1.4">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/crypto_mail/javamail-1.4.5" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/lib/crypto_mail/javamail-1.4.5/docs/javadocs" />
+    </JAVADOC>
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/crypto_mail/javamail-1.4.5" recursive="false" />
+  </library>
+</component>
