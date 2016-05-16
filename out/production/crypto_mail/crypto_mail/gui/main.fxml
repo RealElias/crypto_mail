@@ -23,7 +23,7 @@
       <GridPane.margin>
          <Insets top="3.0" />
       </GridPane.margin></Button>
-    <Button mnemonicParsing="false" onAction="#getMail" text="Get Mail" GridPane.valignment="TOP">
+    <Button fx:id="getMailButton" mnemonicParsing="false" text="Get Mail" GridPane.valignment="TOP">
       <GridPane.margin>
          <Insets left="115.0" top="3.0" />
       </GridPane.margin></Button>
@@ -107,7 +107,7 @@
                      <Insets left="100.0" />
                   </GridPane.margin>
                </Label>
-               <ProgressBar fx:id="progressBar" prefWidth="100.0" progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+               <ProgressBar fx:id="progressBar" prefWidth="450.0" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                <TextField fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                <Label text="Subject:" GridPane.halignment="RIGHT" />
                <Label text="From:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />

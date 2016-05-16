@@ -11,6 +11,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.web.WebView;
@@ -73,6 +76,11 @@ public class MainController {
     @FXML
     Label progressLabel;
 
+    @FXML
+    Button getMailButton;
+
+    private Task getMailTask;
+
     private Account selectedAccount;
 
     private List<MailMessage> selectedFolder;
@@ -105,6 +113,23 @@ public class MainController {
         messagesList.getSelectionModel().selectedIndexProperty().addListener((ChangeListener) (observable, oldValue, newValue) -> {
             selectMessage((Integer) newValue);
         });
+        getMailButton.setOnAction(e -> {
+            getMailTask = createTask(accounts);
+            progressBar.setVisible(true);
+            progressBar.setProgress(-1.0);
+            new Thread(getMailTask).start();
+            getMailTask.setOnSucceeded((EventHandler<Event>) event -> progressBar.setVisible(false));
+        });
+    }
+
+    private Task createTask(List<Account> accounts) {
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                accounts.forEach(mailService::getMail);
+                return true;
+            }
+        };
     }
 
     private void selectMessage(Integer index) {
@@ -161,34 +186,6 @@ public class MainController {
         foldersList.setItems(folders);
         editAccountButton.setDisable(false);
         removeAccountButton.setDisable(false);
-    }
-
-    public void getMail() {
-        progressLabel.setText("");
-        for (Account account : accounts) {
-            mailService.getMail(account, this);
-        }
-        writeAccounts();
-    }
-
-    public void setProgress(int ready, int total, String accountName, String folder) {
-//        progressBar.setProgress(ready/total);
-//        progressLabel.setText(accountName + ":" + folder + " " + ready + "/" + total);
-        Task progressChangeTask = createWorker(ready, total, accountName, folder);
-        progressBar.progressProperty().unbind();
-        progressBar.progressProperty().bind(progressChangeTask.progressProperty());
-        new Thread(progressChangeTask).start();
-    }
-
-    private Task createWorker(int ready, int total, String accountName, String folder) {
-        return new Task() {
-            @Override
-            protected Object call() throws Exception {
-                progressBar.setProgress(ready/total);
-                progressLabel.setText(accountName + ":" + folder + " " + ready + "/" + total);
-                return true;
-            }
-        };
     }
 
     public void addAccount() {
