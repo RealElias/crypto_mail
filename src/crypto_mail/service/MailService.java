@@ -6,16 +6,9 @@ import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
 import crypto_mail.service.util.MailUtils;
 
-import javax.mail.Folder;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.Part;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Store;
-import javax.mail.Transport;
+import javax.mail.*;
 import javax.mail.internet.MimeMessage;
+import javax.mail.search.FlagTerm;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,15 +34,25 @@ public class MailService {
 
             Map<String, List<MailMessage>> folders = new HashMap<>();
             for (Folder folder : store.getDefaultFolder().list()) {
-                if (Arrays.asList(((IMAPFolder) folder).getAttributes()).contains("\\Noselect"))
+                if (Arrays.asList(((IMAPFolder) folder).getAttributes()).contains("\\Noselect")) {
                     continue;
+                }
                 folder.open(Folder.READ_ONLY);
                 List<MailMessage> mailMessages = new ArrayList();
-                for (int i = 0; i < folder.getMessageCount(); i++) {
-                    mailMessages.add(MailService.asMailMessage(folder.getMessages()[i]));
-                    controller.updateProgressBar(i, folder.getMessageCount(), folder.getName());
+
+                Flags seen = new Flags(Flags.Flag.SEEN);
+                FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+                Message messages[] = folder.search(unseenFlagTerm);
+
+                for (int i = 0; i < messages.length; i++) {
+                    mailMessages.add(MailService.asMailMessage(messages[i]));
+                    controller.updateProgressBar(i, messages.length, folder.getName());
                 }
-                folders.put(folder.getName(), mailMessages);
+                if (account.getFolders().keySet().contains(folder.getName())) {
+                    account.getFolders().get(folder.getName()).addAll(mailMessages);
+                } else {
+                    folders.put(folder.getName(), mailMessages);
+                }
             }
 
             account.setFolders(folders);
