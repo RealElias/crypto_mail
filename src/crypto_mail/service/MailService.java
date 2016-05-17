@@ -1,14 +1,29 @@
 package crypto_mail.service;
 
+import com.sun.mail.imap.IMAPFolder;
 import crypto_mail.gui.MainController;
 import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
 import crypto_mail.service.util.MailUtils;
 
-import javax.mail.*;
+import javax.mail.Folder;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Store;
+import javax.mail.Transport;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 public class MailService {
 
@@ -26,6 +41,8 @@ public class MailService {
 
             Map<String, List<MailMessage>> folders = new HashMap<>();
             for (Folder folder : store.getDefaultFolder().list()) {
+                if (Arrays.asList(((IMAPFolder) folder).getAttributes()).contains("\\Noselect"))
+                    continue;
                 folder.open(Folder.READ_ONLY);
                 List<MailMessage> mailMessages = new ArrayList();
                 for (int i = 0; i < folder.getMessageCount(); i++) {

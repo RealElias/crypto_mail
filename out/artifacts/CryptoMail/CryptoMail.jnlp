@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="CryptoMail.jar" size="47103" download="eager" />
+    <jar href="CryptoMail.jar" size="48533" download="eager" />
     <jar href="mail.jar" size="507849" download="eager" />
   </resources>
   <jfx:javafx-desc  width="600" height="400" main-class="crypto_mail.Main"  name="CryptoMail" />

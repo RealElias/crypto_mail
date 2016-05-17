@@ -134,6 +134,8 @@ public class MainController {
             @Override
             protected Object call() throws Exception {
                 mailService.getMail(selectedAccount, controller);
+                writeAccounts();
+                selectAccount(accounts.indexOf(selectedAccount));
                 return true;
             }
         };
