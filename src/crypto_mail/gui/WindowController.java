@@ -7,6 +7,7 @@ import crypto_mail.model.User;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -26,6 +27,7 @@ public class WindowController {
             stage.setResizable(false);
             MainController controller = loader.getController();
             controller.setUser(user);
+            stage.getIcons().add(new Image("file:icons/lock.png"));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,6 +53,7 @@ public class WindowController {
             stage.setScene(new Scene(loader.load()));
             AccountSettingsController controller = loader.getController();
             controller.initController(mainController, account);
+            stage.getIcons().add(new Image("file:icons/lock.png"));
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,6 +74,7 @@ public class WindowController {
             if (mailType == ComposeMailType.REPLY) {
                 controller.initReply(message);
             }
+            stage.getIcons().add(new Image("file:icons/lock.png"));
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,6 +91,7 @@ public class WindowController {
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root, width, height));
+            stage.getIcons().add(new Image("file:icons/lock.png"));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

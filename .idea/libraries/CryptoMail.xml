@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="CryptoMail">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/CryptoMail/mail.jar!/" />
+      <root url="jar://$PROJECT_DIR$/out/artifacts/CryptoMail/CryptoMail.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

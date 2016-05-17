@@ -2,24 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Point3D?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
-
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="1006.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="crypto_mail.gui.MainController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="642.0" prefWidth="1006.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="crypto_mail.gui.MainController">
     <rowConstraints>
         <RowConstraints maxHeight="322.0" minHeight="22.0" prefHeight="32.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="600.0" vgrow="SOMETIMES" />
     </rowConstraints>
-    <Button mnemonicParsing="false" onAction="#composeNewMail" text="Compose Mail" GridPane.valignment="TOP">
+    <Button fx:id="composeMailButton" mnemonicParsing="false" onAction="#composeNewMail" text="Compose Mail" GridPane.valignment="TOP">
       <GridPane.margin>
          <Insets top="3.0" />
       </GridPane.margin></Button>
@@ -43,8 +36,8 @@
                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="177.0" vgrow="SOMETIMES" />
-                    <RowConstraints maxHeight="40.0" minHeight="23.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="275.0" minHeight="10.0" prefHeight="275.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="76.0" minHeight="23.0" prefHeight="38.0" vgrow="SOMETIMES" />
                     <RowConstraints maxHeight="287.0" minHeight="10.0" prefHeight="287.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
@@ -60,27 +53,37 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         </rowConstraints>
                         <children>
-                            <Button fx:id="removeAccountButton" disable="true" maxHeight="28.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeAccount">
-                            <graphic>
-                               <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                  <image>
-                                     <Image url="@icons/remove.png" />
-                                  </image>
-                               </ImageView>
-                            </graphic></Button>
+                            <Button fx:id="addAccountButton" maxHeight="28.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addAccount" GridPane.columnIndex="0">
+                                <graphic>
+                                    <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                        <image><Image url="@icons/add.png" /></image>
+                                    </ImageView>
+                                </graphic>
+                                <tooltip>
+                                    <Tooltip text="Add account" />
+                                </tooltip>
+                            </Button>
                             <Button fx:id="editAccountButton" disable="true" maxHeight="28.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#editAccount" GridPane.columnIndex="1">
                                 <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                         <image><Image url="@icons/edit.png" /></image>
                                     </ImageView>
                                 </graphic>
+                                <tooltip>
+                                    <Tooltip text="Edit account" />
+                                </tooltip>
                             </Button>
-                            <Button fx:id="addAccountButton" maxHeight="28.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#addAccount" GridPane.columnIndex="2">
+                            <Button fx:id="removeAccountButton" disable="true" maxHeight="28.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#removeAccount" GridPane.columnIndex="2">
                                 <graphic>
                                     <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                        <image><Image url="@icons/add.png" /></image>
+                                        <image>
+                                            <Image url="@icons/remove.png" />
+                                        </image>
                                     </ImageView>
                                 </graphic>
+                                <tooltip>
+                                    <Tooltip text="Remove account" />
+                                </tooltip>
                             </Button>
                         </children>
                     </GridPane>
@@ -99,15 +102,9 @@
             <RowConstraints maxHeight="515.0" minHeight="0.0" prefHeight="23.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="433.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="515.0" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-               <RowConstraints maxHeight="515.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
            </rowConstraints>
             <children>
-               <Label fx:id="progressLabel" prefWidth="350.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                  <GridPane.margin>
-                     <Insets left="100.0" />
-                  </GridPane.margin>
-               </Label>
-               <ProgressBar fx:id="progressBar" prefWidth="450.0" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+               <ProgressBar fx:id="progressBar" prefWidth="250.0" progress="0.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                <TextField fx:id="dateField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                <Label text="Subject:" GridPane.halignment="RIGHT" />
                <Label text="From:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />

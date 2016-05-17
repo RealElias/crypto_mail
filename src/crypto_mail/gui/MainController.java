@@ -11,11 +11,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextField;
 import javafx.scene.web.WebView;
 
 import javax.mail.Address;
@@ -79,6 +80,9 @@ public class MainController {
     @FXML
     Button getMailButton;
 
+    @FXML
+    Button composeMailButton;
+
     private Task getMailTask;
 
     private Account selectedAccount;
@@ -118,7 +122,7 @@ public class MainController {
             progressBar.setVisible(true);
             progressBar.setProgress(-1.0);
             new Thread(getMailTask).start();
-            getMailTask.setOnSucceeded((EventHandler<Event>) event -> progressBar.setVisible(false));
+            getMailTask.setOnSucceeded(event -> progressBar.setVisible(false));
         });
     }
 
@@ -186,6 +190,8 @@ public class MainController {
         foldersList.setItems(folders);
         editAccountButton.setDisable(false);
         removeAccountButton.setDisable(false);
+        getMailButton.setDisable(false);
+        composeMailButton.setDisable(false);
     }
 
     public void addAccount() {
@@ -197,6 +203,8 @@ public class MainController {
         accountsList.setItems(accountNames);
         editAccountButton.setDisable(true);
         removeAccountButton.setDisable(true);
+        getMailButton.setDisable(true);
+        composeMailButton.setDisable(true);
     }
 
     public void editAccount() {
