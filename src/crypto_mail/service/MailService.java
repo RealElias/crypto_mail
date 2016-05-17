@@ -1,5 +1,6 @@
 package crypto_mail.service;
 
+import crypto_mail.gui.MainController;
 import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
 import crypto_mail.service.util.MailUtils;
@@ -11,7 +12,7 @@ import java.util.*;
 
 public class MailService {
 
-    public void getMail(Account account) {
+    public void getMail(Account account,MainController controller) {
         Properties props = new Properties();
         props.put("mail.store.protocol", "imaps");
 
@@ -29,6 +30,7 @@ public class MailService {
                 List<MailMessage> mailMessages = new ArrayList();
                 for (int i = 0; i < folder.getMessageCount(); i++) {
                     mailMessages.add(MailService.asMailMessage(folder.getMessages()[i]));
+                    controller.updateProgressBar(i, folder.getMessageCount(), folder.getName());
                 }
                 folders.put(folder.getName(), mailMessages);
             }

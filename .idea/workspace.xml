@@ -7,26 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/model/Account.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/model/Account.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/service/AccountService.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/service/AccountService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/model/AccountSettings.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/model/AccountSettings.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/AccountSettingsController.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/AccountSettingsController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/CryptoMail/CryptoMail.jar" afterPath="$PROJECT_DIR$/out/artifacts/CryptoMail/CryptoMail.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/service/util/MailUtils.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/service/util/MailUtils.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/MainController.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/MainController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/model/User.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/model/User.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/service/UserService.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/service/UserService.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/WindowController.class" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/WindowController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/CryptoMail/CryptoMail.html" afterPath="$PROJECT_DIR$/out/artifacts/CryptoMail/CryptoMail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/CryptoMail/CryptoMail.jnlp" afterPath="$PROJECT_DIR$/out/artifacts/CryptoMail/CryptoMail.jnlp" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/crypto_mail/service/MailService.java" afterPath="$PROJECT_DIR$/src/crypto_mail/service/MailService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/crypto_mail/gui/MainController.java" afterPath="$PROJECT_DIR$/src/crypto_mail/gui/MainController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/crypto_mail/gui/WindowController.java" afterPath="$PROJECT_DIR$/src/crypto_mail/gui/WindowController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/main.fxml" afterPath="$PROJECT_DIR$/out/production/crypto_mail/crypto_mail/gui/main.fxml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resource/crypto_mail/gui/main.fxml" afterPath="$PROJECT_DIR$/resource/crypto_mail/gui/main.fxml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -96,8 +79,8 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.5" vertical-offset="810" max-vertical-offset="2250">
-              <caret line="79" column="72" selection-start-line="79" selection-start-column="72" selection-end-line="79" selection-end-column="72" />
+            <state vertical-scroll-proportion="-6.366667" vertical-offset="1354" max-vertical-offset="2265">
+              <caret line="103" column="42" selection-start-line="103" selection-start-column="29" selection-end-line="103" selection-end-column="42" />
               <folding>
                 <element signature="n#padding#0;n#GridPane#0;n#!!top" expanded="false" />
               </folding>
@@ -108,9 +91,21 @@
       <file leaf-file-name="MainController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/crypto_mail/gui/MainController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38187703" vertical-offset="2164" max-vertical-offset="3345">
-              <caret line="189" column="38" selection-start-line="189" selection-start-column="38" selection-end-line="189" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.35934663" vertical-offset="1062" max-vertical-offset="3660">
+              <caret line="112" column="77" selection-start-line="112" selection-start-column="77" selection-end-line="112" selection-end-column="77" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MailService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/crypto_mail/service/MailService.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="282" max-vertical-offset="2070">
+              <caret line="32" column="52" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -198,10 +193,10 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/crypto_mail/service/AccountService.java" />
         <option value="$PROJECT_DIR$/src/crypto_mail/service/util/CryptoUtils.java" />
-        <option value="$PROJECT_DIR$/src/crypto_mail/service/MailService.java" />
         <option value="$PROJECT_DIR$/src/crypto_mail/gui/WindowController.java" />
-        <option value="$PROJECT_DIR$/src/crypto_mail/gui/MainController.java" />
         <option value="$PROJECT_DIR$/resource/crypto_mail/gui/main.fxml" />
+        <option value="$PROJECT_DIR$/src/crypto_mail/service/MailService.java" />
+        <option value="$PROJECT_DIR$/src/crypto_mail/gui/MainController.java" />
       </list>
     </option>
   </component>
@@ -538,7 +533,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
+              <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -890,12 +885,12 @@
       <updated>1359379246138</updated>
       <workItem from="1359379250712" duration="1302000" />
       <workItem from="1463466626254" duration="993000" />
-      <workItem from="1463467653628" duration="1498000" />
+      <workItem from="1463467653628" duration="3607000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3793000" />
+    <option name="totallyTimeSpent" value="5902000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -921,7 +916,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32917964" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917964" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32941177" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17765957" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
@@ -931,7 +926,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39875388" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39875388" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -965,12 +960,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/crypto_mail/gui/MainController.java</url>
-          <line>215</line>
+          <line>235</line>
           <properties />
           <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="47" />
+      <option name="time" value="49" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1178,16 +1173,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/crypto_mail/service/MailService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/artifacts/CryptoMail.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -1227,19 +1212,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resource/crypto_mail/gui/main.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.5" vertical-offset="810" max-vertical-offset="2250">
-          <caret line="79" column="72" selection-start-line="79" selection-start-column="72" selection-end-line="79" selection-end-column="72" />
-          <folding>
-            <element signature="n#padding#0;n#GridPane#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/crypto_mail/gui/WindowController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="874" max-vertical-offset="1425">
@@ -1248,10 +1220,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/javafx-src.zip!/javafx/concurrent/Task.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3321234" vertical-offset="20232" max-vertical-offset="21225">
+          <caret line="1422" column="0" selection-start-line="1422" selection-start-column="0" selection-end-line="1422" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/crypto_mail/service/MailService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="282" max-vertical-offset="2070">
+          <caret line="32" column="52" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resource/crypto_mail/gui/main.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.366667" vertical-offset="1354" max-vertical-offset="2265">
+          <caret line="103" column="42" selection-start-line="103" selection-start-column="29" selection-end-line="103" selection-end-column="42" />
+          <folding>
+            <element signature="n#padding#0;n#GridPane#0;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/crypto_mail/gui/MainController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38187703" vertical-offset="2164" max-vertical-offset="3345">
-          <caret line="189" column="38" selection-start-line="189" selection-start-column="38" selection-end-line="189" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.35934663" vertical-offset="1062" max-vertical-offset="3660">
+          <caret line="112" column="77" selection-start-line="112" selection-start-column="77" selection-end-line="112" selection-end-column="77" />
           <folding />
         </state>
       </provider>

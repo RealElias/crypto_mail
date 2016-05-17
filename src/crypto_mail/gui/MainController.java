@@ -7,7 +7,6 @@ import crypto_mail.model.User;
 import crypto_mail.service.AccountService;
 import crypto_mail.service.MailService;
 import crypto_mail.service.util.MailUtils;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -108,29 +107,50 @@ public class MainController {
 
     private void initUI() {
         updateAccountsList();
-        accountsList.getSelectionModel().selectedIndexProperty().addListener((ChangeListener) (observable, oldValue, newValue) -> {
+        accountsList.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             selectAccount((Integer) newValue);
         });
-        foldersList.getSelectionModel().selectedIndexProperty().addListener((ChangeListener) (observable, oldValue, newValue) -> {
+        foldersList.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             selectFolder((Integer) newValue);
         });
-        messagesList.getSelectionModel().selectedIndexProperty().addListener((ChangeListener) (observable, oldValue, newValue) -> {
+        messagesList.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             selectMessage((Integer) newValue);
         });
         getMailButton.setOnAction(e -> {
-            getMailTask = createTask(accounts);
+            getMailTask = createTask(this);
             progressBar.setVisible(true);
-            progressBar.setProgress(-1.0);
+            progressLabel.setVisible(true);
+            progressBar.setProgress(0.0);
             new Thread(getMailTask).start();
-            getMailTask.setOnSucceeded(event -> progressBar.setVisible(false));
+            getMailTask.setOnSucceeded(event -> {
+                progressBar.setVisible(false);
+                progressLabel.setVisible(false);
+            });
         });
     }
 
-    private Task createTask(List<Account> accounts) {
+    private Task createTask(MainController controller) {
         return new Task() {
             @Override
             protected Object call() throws Exception {
-                accounts.forEach(mailService::getMail);
+                mailService.getMail(selectedAccount, controller);
+                return true;
+            }
+        };
+    }
+
+    public void updateProgressBar(int cur, int total, String folder) {
+        Task updateBar = createUpdateProgressBarTask(cur + 1, total, folder);
+        progressLabel.textProperty().bind(updateBar.messageProperty());
+        new Thread(updateBar).start();
+    }
+
+    private Task createUpdateProgressBarTask(int cur, int total, String folder) {
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                updateMessage(folder + ":" + cur + "/" + total);
+                progressBar.setProgress((double) cur/total);
                 return true;
             }
         };
