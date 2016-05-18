@@ -1,6 +1,7 @@
 package crypto_mail.service;
 
 import com.sun.mail.imap.IMAPFolder;
+import com.sun.mail.util.FolderClosedIOException;
 import crypto_mail.gui.MainController;
 import crypto_mail.model.Account;
 import crypto_mail.model.MailMessage;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Stream;
 
 public class MailService {
 
@@ -32,33 +34,39 @@ public class MailService {
                     account.getAccountSettings().getUser(),
                     account.getAccountSettings().getPass());
 
-            Map<String, List<MailMessage>> folders = new HashMap<>();
             for (Folder folder : store.getDefaultFolder().list()) {
-                if (Arrays.asList(((IMAPFolder) folder).getAttributes()).contains("\\Noselect")) {
-                    continue;
-                }
-                folder.open(Folder.READ_ONLY);
-                List<MailMessage> mailMessages = new ArrayList();
-
-                Flags seen = new Flags(Flags.Flag.SEEN);
-                FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
-                Message messages[] = folder.search(unseenFlagTerm);
-
-                for (int i = 0; i < messages.length; i++) {
-                    mailMessages.add(MailService.asMailMessage(messages[i]));
-                    controller.updateProgressBar(i, messages.length, folder.getName());
-                }
-                if (account.getFolders().keySet().contains(folder.getName())) {
-                    account.getFolders().get(folder.getName()).addAll(mailMessages);
-                } else {
-                    folders.put(folder.getName(), mailMessages);
-                }
+                getFolderContent(folder, account.getFolders(), controller);
             }
-
-            account.setFolders(folders);
         } catch (MessagingException e) {
             account.setFolders(new HashMap<>());
             e.printStackTrace();
+        }
+    }
+
+    private void getFolderContent(Folder folder, Map<String, List<MailMessage>> folders, MainController controller) throws MessagingException {
+        if (Arrays.asList(((IMAPFolder) folder).getAttributes()).contains("\\Noselect")) {
+            if (Arrays.asList(((IMAPFolder) folder).getAttributes()).contains("\\HasChildren")) {
+                for (Folder subfolder : folder.list()) {
+                    getFolderContent(subfolder, folders, controller);
+                }
+            }
+        } else {
+            folder.open(Folder.READ_ONLY);
+            List<MailMessage> mailMessages = new ArrayList();
+
+            Flags seen = new Flags(Flags.Flag.SEEN);
+            FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+            Message messages[] = folder.search(unseenFlagTerm);
+
+            for (int i = 0; i < messages.length; i++) {
+                mailMessages.add(MailService.asMailMessage(messages[i]));
+                controller.updateProgressBar(i, messages.length, folder.getName());
+            }
+            if (folders.keySet().contains(folder.getName())) {
+                folders.get(folder.getName()).addAll(mailMessages);
+            } else {
+                folders.put(folder.getName(), mailMessages);
+            }
         }
     }
 
