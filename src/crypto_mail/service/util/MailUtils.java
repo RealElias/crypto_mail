@@ -14,7 +14,7 @@ public class MailUtils {
 
     public static String asString(List<Address> addresses) {
         StringJoiner joiner = new StringJoiner(", ");
-        addresses.stream().forEach(address -> joiner.add(address.toString().replaceAll("=.+=", "")));
+        addresses.stream().forEach(address -> joiner.add(address.toString()));
         return joiner.toString();
     }
 

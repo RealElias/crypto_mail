@@ -17,13 +17,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBuilder;
 import javafx.scene.web.WebView;
 
 import javax.mail.Address;
+import javax.mail.internet.MimeUtility;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -89,6 +94,8 @@ public class MainController {
 
     private List<MailMessage> selectedFolder;
 
+    private String selectedFolderName;
+
     private MailMessage selectedMessage;
 
     public MainController() {
@@ -119,14 +126,7 @@ public class MainController {
         });
         getMailButton.setOnAction(e -> {
             getMailTask = createTask(this);
-            progressBar.setVisible(true);
-            progressLabel.setVisible(true);
-            progressBar.setProgress(0.0);
             new Thread(getMailTask).start();
-            getMailTask.setOnSucceeded(event -> {
-                progressBar.setVisible(false);
-                progressLabel.setVisible(false);
-            });
         });
     }
 
@@ -134,9 +134,17 @@ public class MainController {
         return new Task() {
             @Override
             protected Object call() throws Exception {
+                progressBar.setVisible(true);
+                progressLabel.setVisible(true);
+                progressBar.setProgress(0.0);
+
                 mailService.getMail(selectedAccount, controller);
                 writeAccounts();
-                selectAccount(accounts.indexOf(selectedAccount));
+
+                progressBar.setVisible(false);
+                progressLabel.setVisible(false);
+                Platform.runLater(() -> selectAccount(accounts.indexOf(selectedAccount)));
+
                 return true;
             }
         };
@@ -158,34 +166,63 @@ public class MainController {
         if(index < 0)
             return;
 
-        selectedMessage = selectedFolder.get(selectedFolder.size() - index - 1);
+        try {
+            selectedMessage = selectedFolder.get(selectedFolder.size() - index - 1);
+            readMessage(index);
 
-        subjectField.setText(selectedMessage.getSubject());
-        fromField.setText(MailUtils.asString(selectedMessage.getFrom()));
+            subjectField.setText(selectedMessage.getSubject());
+            fromField.setText(MimeUtility.decodeText(MailUtils.asString(selectedMessage.getFrom())));
 
-        if (selectedMessage.getRecipients().size() > 1) {
-            List<Address> ccAddresses = selectedMessage.getRecipients();
-            ccAddresses.remove(0);
-            ccField.setText(MailUtils.asString(ccAddresses));
+            if (selectedMessage.getRecipients().size() > 1) {
+                List<Address> ccAddresses = selectedMessage.getRecipients();
+                ccAddresses.remove(0);
+                ccField.setText(MimeUtility.decodeText(MailUtils.asString(ccAddresses)));
+            }
+
+            LocalDateTime dateTime = LocalDateTime.ofInstant(selectedMessage.getReceivedDate().toInstant(), ZoneId.systemDefault());
+            dateField.setText(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            toField.setText(MimeUtility.decodeText(selectedMessage.getRecipients().get(0).toString()));
+            contentArea.getEngine().loadContent(selectedMessage.getContent());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+    }
 
-        LocalDateTime dateTime = LocalDateTime.ofInstant(selectedMessage.getReceivedDate().toInstant(), ZoneId.systemDefault());
-        dateField.setText(dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        toField.setText(selectedMessage.getRecipients().get(0).toString());
-        contentArea.getEngine().loadContent(selectedMessage.getContent());
+    private void readMessage(Integer index) {
+        if(selectedMessage.isUnseen()) {
+            selectedMessage.setUnseen(false);
+            ((Text) messagesList.getItems().get(index)).setStyle("");
+            Integer folderIndex = Arrays.asList(selectedAccount.getFolders().keySet().toArray()).indexOf(selectedFolderName);
+            Long unseenCount = selectedFolder.stream()
+                    .filter(MailMessage::isUnseen)
+                    .count();
+
+            ((Text) foldersList.getItems().get(foldersList.getItems().size() - folderIndex - 1)).setText(selectedFolderName + "(" + unseenCount + ")");
+
+            new Thread(new Task() {
+                @Override
+                protected Object call() throws Exception {
+                    mailService.setMessageRead(selectedAccount, selectedFolderName, selectedMessage);
+                    accountService.writeAccounts(accounts, user);
+                    return true;
+                }
+            });
+        }
     }
 
     private void selectFolder(Integer index) {
         if(index < 0)
             return;
 
-        String folderName = (String) selectedAccount.getFolders().keySet().toArray()[selectedAccount.getFolders().keySet().size() - index - 1];
-        selectedFolder = selectedAccount.getFolders().get(folderName);
-
-        List<String> reversedMessages = selectedFolder.stream()
-                .map(message -> message.getSubject() + "\n" + message.getContentTitle())
+        selectedFolderName = (String) selectedAccount.getFolders().keySet().toArray()[selectedAccount.getFolders().keySet().size() - index - 1];
+        selectedFolder = selectedAccount.getFolders().get(selectedFolderName);
+        List<Text> reversedMessages = selectedFolder.stream()
+                .map(message -> TextBuilder.create()
+                        .text(message.getSubject() + "\n" + message.getContentTitle())
+                        .style(message.isUnseen() ? "-fx-font-weight:bold;" : "")
+                        .build())
                 .collect(Collectors.toList());
-        ObservableList<String> messages = FXCollections.observableArrayList(new ArrayList<>());
+        ObservableList<Text> messages = FXCollections.observableArrayList(new ArrayList<>());
         IntStream.range(0, reversedMessages.size()).forEach(i -> messages.add(reversedMessages.get(reversedMessages.size() - i - 1)));
         messagesList.setItems(messages);
     }
@@ -195,25 +232,37 @@ public class MainController {
             return;
 
         this.selectedAccount = accounts.get(index);
-        ObservableList<String> folders = FXCollections.observableArrayList(new ArrayList<>());
+        ObservableList<Text> folders = FXCollections.observableArrayList(new ArrayList<>());
         if(selectedAccount.getFolders() != null) {
-            List<String> reversedFolders = selectedAccount
+            List<Text> reversedFolders = selectedAccount
                     .getFolders()
                     .entrySet()
                     .stream()
-                    .map(entry -> entry.getKey() + "(" + entry.getValue().size() + ")")
+                    .map(entry -> new Text(entry.getKey() + "(" + entry.getValue().stream().filter(MailMessage::isUnseen).count() + ")"))
                     .collect(Collectors.toList());
             IntStream.range(0, reversedFolders.size()).forEach(i -> folders.add(reversedFolders.get(reversedFolders.size() - i - 1)));
         }
         foldersList.setItems(folders);
+        clearMessageList();
         editAccountButton.setDisable(false);
         removeAccountButton.setDisable(false);
         getMailButton.setDisable(false);
         composeMailButton.setDisable(false);
     }
 
+    private void clearMessageList() {
+        messagesList.setItems(FXCollections.observableArrayList(new ArrayList<>()));
+        subjectField.clear();
+        toField.clear();
+        fromField.clear();
+        ccField.clear();
+        dateField.clear();
+        contentArea.getEngine().loadContent("");
+    }
+
     public void addAccount() {
         WindowController.openAccountSettingsWindow(getClass(), null, this);
+        updateAccountsList();
     }
 
     private void updateAccountsList() {
@@ -249,7 +298,6 @@ public class MainController {
 
     private void writeAccounts() {
         accountService.writeAccounts(accounts, user);
-        updateAccountsList();
     }
 
     public void composeNewMail() {

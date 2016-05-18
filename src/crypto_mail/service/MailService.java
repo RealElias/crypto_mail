@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 public class MailService {
 
-    public void getMail(Account account,MainController controller) {
+    public void getMail(Account account, MainController controller) {
         Properties props = new Properties();
         props.put("mail.store.protocol", "imaps");
 
@@ -54,9 +54,14 @@ public class MailService {
             folder.open(Folder.READ_ONLY);
             List<MailMessage> mailMessages = new ArrayList();
 
-            Flags seen = new Flags(Flags.Flag.SEEN);
-            FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
-            Message messages[] = folder.search(unseenFlagTerm);
+            Message messages[];
+            if(folders.keySet().contains(folder.getName())) {
+                Flags seen = new Flags(Flags.Flag.SEEN);
+                FlagTerm unseenFlagTerm = new FlagTerm(seen, false);
+                messages = folder.search(unseenFlagTerm);
+            } else {
+                messages = folder.getMessages();
+            }
 
             for (int i = 0; i < messages.length; i++) {
                 mailMessages.add(MailService.asMailMessage(messages[i]));
@@ -74,7 +79,7 @@ public class MailService {
     private static void putMessages(List<MailMessage> newMessages, List<MailMessage> oldMessages) {
         newMessages.stream()
                 .filter(newMessage -> oldMessages.stream()
-                        .anyMatch(oldMessage -> oldMessage.equals(newMessage)))
+                        .anyMatch(oldMessage -> !oldMessage.equals(newMessage)))
                 .forEach(oldMessages::add);
     }
 
@@ -90,7 +95,7 @@ public class MailService {
             }
             mailMessage.setReceivedDate(message.getReceivedDate());
             mailMessage.setContent(getText(message));
-            mailMessage.setSeen(false);
+            mailMessage.setUnseen(!message.getFlags().contains(Flags.Flag.SEEN));
         } catch (MessagingException | IOException | NullPointerException e) {
             mailMessage.setContent("Can't get content");
         }
@@ -163,6 +168,32 @@ public class MailService {
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setMessageRead(Account account, String folderName, MailMessage message) {
+        Properties props = new Properties();
+        props.put("mail.store.protocol", "imaps");
+
+        try {
+            Session session = Session.getInstance(props);
+            Store store = session.getStore();
+            store.connect(account.getAccountSettings().getInputHost(),
+                    account.getAccountSettings().getInputPort(),
+                    account.getAccountSettings().getUser(),
+                    account.getAccountSettings().getPass());
+
+            Folder folder = store.getFolder(folderName);
+            folder.open(Folder.READ_WRITE);
+            for (Message msg : folder.getMessages()) {
+                if (asMailMessage(msg).equals(message)) {
+                    msg.setFlag(Flags.Flag.SEEN, false);
+                    return;
+                }
+            }
+        } catch (MessagingException e) {
+            account.setFolders(new HashMap<>());
             e.printStackTrace();
         }
     }

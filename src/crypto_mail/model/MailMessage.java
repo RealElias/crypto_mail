@@ -1,6 +1,9 @@
 package crypto_mail.model;
 
+import crypto_mail.service.util.MailUtils;
+
 import javax.mail.Address;
+import javax.mail.Message;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +14,7 @@ public class MailMessage implements Serializable {
     private List<Address> recipients;
     private Date receivedDate;
     private String content;
-    private Boolean seen;
+    private Boolean unseen;
 
     public String getSubject() {
         return subject;
@@ -53,12 +56,12 @@ public class MailMessage implements Serializable {
         this.content = content;
     }
 
-    public Boolean isSeen() {
-        return seen;
+    public Boolean isUnseen() {
+        return unseen;
     }
 
-    public void setSeen(Boolean seen) {
-        this.seen = seen;
+    public void setUnseen(Boolean unseen) {
+        this.unseen = unseen;
     }
 
     public String getContentTitle() {
@@ -68,5 +71,13 @@ public class MailMessage implements Serializable {
         if(clearContent.length() < 30)
             return clearContent;
         return clearContent.substring(0, 30);
+    }
+
+    public Boolean equals(MailMessage message) {
+        return subject.equals(message.getSubject())
+                && MailUtils.asString(from).equals(MailUtils.asString(message.getFrom()))
+                && MailUtils.asString(recipients).equals(MailUtils.asString(message.getRecipients()))
+                && content.equals(message.getContent())
+                && receivedDate.equals(message.getReceivedDate());
     }
 }
