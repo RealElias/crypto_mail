@@ -11,6 +11,7 @@ public class MailMessage implements Serializable {
     private List<Address> recipients;
     private Date receivedDate;
     private String content;
+    private Boolean seen;
 
     public String getSubject() {
         return subject;
@@ -50,6 +51,14 @@ public class MailMessage implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(Boolean seen) {
+        this.seen = seen;
     }
 
     public String getContentTitle() {

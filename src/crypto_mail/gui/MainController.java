@@ -7,6 +7,7 @@ import crypto_mail.model.User;
 import crypto_mail.service.AccountService;
 import crypto_mail.service.MailService;
 import crypto_mail.service.util.MailUtils;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -142,19 +143,14 @@ public class MainController {
     }
 
     public void updateProgressBar(int cur, int total, String folder) {
-        Task updateBar = createUpdateProgressBarTask(cur + 1, total, folder);
-        progressLabel.textProperty().bind(updateBar.messageProperty());
-        new Thread(updateBar).start();
+        Runnable updateBar = createUpdateProgressBarTask(cur + 1, total, folder);
+        Platform.runLater(updateBar);
     }
 
-    private Task createUpdateProgressBarTask(int cur, int total, String folder) {
-        return new Task() {
-            @Override
-            protected Object call() throws Exception {
-                updateMessage(folder + ":" + cur + "/" + total);
-                progressBar.setProgress((double) cur/total);
-                return true;
-            }
+    private Runnable createUpdateProgressBarTask(int cur, int total, String folder) {
+        return () -> {
+            progressLabel.setText(folder + ":" + cur + "/" + total);
+            progressBar.setProgress((double) cur/total);
         };
     }
 

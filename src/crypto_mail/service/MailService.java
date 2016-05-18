@@ -63,11 +63,19 @@ public class MailService {
                 controller.updateProgressBar(i, messages.length, folder.getName());
             }
             if (folders.keySet().contains(folder.getName())) {
-                folders.get(folder.getName()).addAll(mailMessages);
+                putMessages(mailMessages, folders.get(folder.getName()));
+//                folders.get(folder.getName()).addAll(mailMessages);
             } else {
                 folders.put(folder.getName(), mailMessages);
             }
         }
+    }
+
+    private static void putMessages(List<MailMessage> newMessages, List<MailMessage> oldMessages) {
+        newMessages.stream()
+                .filter(newMessage -> oldMessages.stream()
+                        .anyMatch(oldMessage -> oldMessage.equals(newMessage)))
+                .forEach(oldMessages::add);
     }
 
     private static MailMessage asMailMessage(Message message) {
@@ -82,6 +90,7 @@ public class MailService {
             }
             mailMessage.setReceivedDate(message.getReceivedDate());
             mailMessage.setContent(getText(message));
+            mailMessage.setSeen(false);
         } catch (MessagingException | IOException | NullPointerException e) {
             mailMessage.setContent("Can't get content");
         }
